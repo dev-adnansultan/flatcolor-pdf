@@ -1,73 +1,83 @@
-# Welcome to your Lovable project
+# Flatcolor PDF
 
-## Project info
+A modern web application for converting images to flat color PDFs with customizable layouts and color palettes.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Project Overview
 
-## How can I edit this code?
+Flatcolor PDF allows users to upload images, select color schemes, choose page layouts, and generate beautiful PDF documents with flat color designs. Built with React and TypeScript, it provides an intuitive user interface for quick PDF generation.
 
-There are several ways of editing your application.
+## Getting Started
 
-**Use Lovable**
+### Prerequisites
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Step 1: Clone the repository
+git clone https://github.com/dev-adnansultan/flatcolor-pdf.git
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Step 2: Navigate to the project directory
+cd flatcolor-pdf
 
-# Step 3: Install the necessary dependencies.
+# Step 3: Install the dependencies
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Step 4: Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will start at `http://localhost:5173` with hot module reloading enabled.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Build for Production
 
-**Use GitHub Codespaces**
+```sh
+npm run build
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Running Tests
 
-## What technologies are used for this project?
+```sh
+npm run test
+```
+
+## Technologies Used
 
 This project is built with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **Vite** - Lightning-fast build tool
+- **TypeScript** - For type safety and better development experience
+- **React** - UI library
+- **shadcn-ui** - High-quality UI components
+- **Tailwind CSS** - Utility-first CSS framework
 
-## How can I deploy this project?
+## Features
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+- 🎨 Customizable color palette selection
+- 📄 Multiple page layout options
+- 🖼️ Image upload and preview
+- 📋 Flat color PDF generation
+- 📝 Edit header and footer information across all pages
+- 🎯 Responsive design
 
-## Can I connect a custom domain to my Lovable project?
+## Project Structure
 
-Yes, you can!
+```
+src/
+├── components/        # React components
+│   ├── ui/           # shadcn-ui components
+│   └── ...           # Feature components
+├── lib/              # Utility functions
+├── pages/            # Page components
+├── hooks/            # Custom React hooks
+└── test/             # Test files
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Contributing
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+MIT License - feel free to use this project for personal or commercial purposes.

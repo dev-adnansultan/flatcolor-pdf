@@ -11,6 +11,7 @@ import ColorPicker from "@/components/ColorPicker";
 import LayoutSelector, { type LayoutType } from "@/components/LayoutSelector";
 import PageSizeSelector, { type PageSize } from "@/components/PageSizeSelector";
 import PDFPreview from "@/components/PDFPreview";
+import HeaderFooterEditor, { type HeaderFooterConfig } from "@/components/HeaderFooterEditor";
 import { generatePDF, downloadPDF } from "@/lib/pdfGenerator";
 
 interface ImageFile {
@@ -26,6 +27,11 @@ const Index = () => {
   const [primaryColor, setPrimaryColor] = useState("#0284C7");
   const [secondaryColor, setSecondaryColor] = useState("#F0F9FF");
   const [showCaptions, setShowCaptions] = useState(true);
+  const [headerFooterConfig, setHeaderFooterConfig] = useState<HeaderFooterConfig>({
+    headerText: "",
+    footerText: "",
+    showPageNumbers: true,
+  });
   const [isGenerating, setIsGenerating] = useState(false);
 
   const handleImagesAdded = useCallback((files: File[]) => {
@@ -83,6 +89,8 @@ const Index = () => {
         primaryColor,
         secondaryColor,
         showCaptions,
+        headerText: headerFooterConfig.headerText,
+        footerText: headerFooterConfig.footerText,
       });
       
       const timestamp = new Date().toISOString().slice(0, 10);
@@ -215,6 +223,12 @@ const Index = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Header & Footer Editor */}
+            <HeaderFooterEditor
+              config={headerFooterConfig}
+              onChange={setHeaderFooterConfig}
+            />
 
             {/* Preview */}
             <Card>

@@ -15,6 +15,8 @@ interface PDFGeneratorOptions {
   primaryColor: string;
   secondaryColor: string;
   showCaptions?: boolean;
+  headerText?: string;
+  footerText?: string;
 }
 
 const hexToRgb = (hex: string): [number, number, number] => {
@@ -29,7 +31,7 @@ const hexToRgb = (hex: string): [number, number, number] => {
 };
 
 export const generatePDF = async (options: PDFGeneratorOptions): Promise<Blob> => {
-  const { images, layout, pageSize, primaryColor, secondaryColor, showCaptions = true } = options;
+  const { images, layout, pageSize, primaryColor, secondaryColor, showCaptions = true, headerText = "", footerText = "" } = options;
 
   const pageFormat = pageSize === "a4" ? "a4" : "letter";
   const pdf = new jsPDF({
@@ -100,7 +102,11 @@ export const generatePDF = async (options: PDFGeneratorOptions): Promise<Blob> =
     pdf.setTextColor(secondaryRgb[0], secondaryRgb[1], secondaryRgb[2]);
     pdf.setFontSize(10);
     pdf.setFont("helvetica", "bold");
-    pdf.text("Image to PDF", margin, margin + 4);
+    
+    // Use custom header text if provided, otherwise use default
+    const headerDisplayText = headerText || "Image to PDF";
+    pdf.text(headerDisplayText, margin, margin + 4);
+    
     pdf.setFont("helvetica", "normal");
     pdf.text(`Page ${pageIndex + 1} of ${pages.length}`, pageWidth - margin, margin + 4, {
       align: "right",
@@ -163,6 +169,14 @@ export const generatePDF = async (options: PDFGeneratorOptions): Promise<Blob> =
     pdf.setDrawColor(primaryRgb[0], primaryRgb[1], primaryRgb[2]);
     pdf.setLineWidth(0.5);
     pdf.line(margin, pageHeight - margin, pageWidth - margin, pageHeight - margin);
+
+    // Footer text
+    if (footerText) {
+      pdf.setTextColor(primaryRgb[0], primaryRgb[1], primaryRgb[2]);
+      pdf.setFontSize(8);
+      pdf.setFont("helvetica", "normal");
+      pdf.text(footerText, margin, pageHeight - margin + 5);
+    }
   }
 
   return pdf.output("blob");
