@@ -15,6 +15,8 @@ interface PDFPreviewProps {
   secondaryColor: string;
   headerText?: string;
   footerText?: string;
+  showHeader?: boolean;
+  showFooter?: boolean;
 }
 
 const PDFPreview = ({
@@ -24,6 +26,8 @@ const PDFPreview = ({
   secondaryColor,
   headerText = "",
   footerText = "",
+  showHeader = true,
+  showFooter = true,
 }: PDFPreviewProps) => {
   const getGridConfig = () => {
     switch (layout) {
@@ -66,25 +70,28 @@ const PDFPreview = ({
               borderColor: primaryColor,
             }}
           >
-            <div
-              className="h-8 flex items-center justify-between px-4"
-              style={{ backgroundColor: primaryColor }}
-            >
-              <span
-                className="text-xs font-medium truncate"
-                style={{ color: secondaryColor }}
+            {/* Header - only show if showHeader is true */}
+            {showHeader && (
+              <div
+                className="h-8 flex items-center justify-between px-4"
+                style={{ backgroundColor: primaryColor }}
               >
-                {headerText || "Image to PDF"}
-              </span>
-              <span
-                className="text-xs font-mono"
-                style={{ color: secondaryColor }}
-              >
-                Page {pageIndex + 1}
-              </span>
-            </div>
+                <span
+                  className="text-xs font-medium truncate"
+                  style={{ color: secondaryColor }}
+                >
+                  {headerText || "Image to PDF"}
+                </span>
+                <span
+                  className="text-xs font-mono"
+                  style={{ color: secondaryColor }}
+                >
+                  Page {pageIndex + 1}
+                </span>
+              </div>
+            )}
             <div
-              className="p-4 h-[calc(100%-2rem)]"
+              className={`p-4 ${showHeader ? 'h-[calc(100%-2rem)]' : 'h-full'}`}
               style={{
                 display: "grid",
                 gridTemplateColumns: `repeat(${cols}, 1fr)`,
@@ -122,8 +129,8 @@ const PDFPreview = ({
                   </div>
                 ))}
             </div>
-            {/* Footer */}
-            {footerText && (
+            {/* Footer - only show if showFooter is true */}
+            {showFooter && footerText && (
               <div
                 className="h-6 flex items-center px-4 text-xs border-t"
                 style={{

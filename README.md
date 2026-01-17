@@ -78,8 +78,8 @@ Contributions welcome! Please open an issue or submit a PR.
 
 ## 📧 Support
 
-- [Open an Issue](https://github.com/dev-adnansultan/flatcolor-pdf/issues)
-- [GitHub Discussions](https://github.com/dev-adnansultan/flatcolor-pdf/discussions)
+- [Open an Issue](https://github.com/madnansultandotme/flatcolor-pdf/issues)
+- [GitHub Discussions](https://github.com/madnansultandotme/flatcolor-pdf/discussions)
 
 ---
 

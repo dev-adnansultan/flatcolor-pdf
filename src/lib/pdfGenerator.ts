@@ -17,6 +17,8 @@ interface PDFGeneratorOptions {
   showCaptions?: boolean;
   headerText?: string;
   footerText?: string;
+  showHeader?: boolean;
+  showFooter?: boolean;
   margins?: {
     top: number;
     right: number;
@@ -46,6 +48,8 @@ export const generatePDF = async (options: PDFGeneratorOptions): Promise<Blob> =
     showCaptions = true, 
     headerText = "", 
     footerText = "",
+    showHeader = true,
+    showFooter = true,
     margins = { top: 15, right: 15, bottom: 15, left: 15 }
   } = options;
 
@@ -62,10 +66,10 @@ export const generatePDF = async (options: PDFGeneratorOptions): Promise<Blob> =
   const primaryRgb = hexToRgb(primaryColor);
   const secondaryRgb = hexToRgb(secondaryColor);
 
-  const margin = margins.top; // Use top margin as main margin for simplicity
-  const headerHeight = 12;
-  const footerHeight = 10;
-  const contentTop = margins.top + headerHeight + 5;
+  const margin = margins.top;
+  const headerHeight = showHeader ? 12 : 0;
+  const footerHeight = showFooter ? 10 : 0;
+  const contentTop = margins.top + headerHeight + (showHeader ? 5 : 0);
   const contentHeight = pageHeight - contentTop - margins.bottom - footerHeight;
   const contentWidth = pageWidth - margins.left - margins.right;
 
@@ -114,23 +118,24 @@ export const generatePDF = async (options: PDFGeneratorOptions): Promise<Blob> =
     pdf.setFillColor(secondaryRgb[0], secondaryRgb[1], secondaryRgb[2]);
     pdf.rect(0, 0, pageWidth, pageHeight, "F");
 
-    // Header
-    pdf.setFillColor(primaryRgb[0], primaryRgb[1], primaryRgb[2]);
-    pdf.rect(0, 0, pageWidth, margins.top + headerHeight, "F");
+    // Header (only if showHeader is true)
+    if (showHeader) {
+      pdf.setFillColor(primaryRgb[0], primaryRgb[1], primaryRgb[2]);
+      pdf.rect(0, 0, pageWidth, margins.top + headerHeight, "F");
 
-    // Header text
-    pdf.setTextColor(secondaryRgb[0], secondaryRgb[1], secondaryRgb[2]);
-    pdf.setFontSize(10);
-    pdf.setFont("helvetica", "bold");
-    
-    // Use custom header text if provided, otherwise use default
-    const headerDisplayText = headerText || "Image to PDF";
-    pdf.text(headerDisplayText, margins.left, margins.top + 4);
-    
-    pdf.setFont("helvetica", "normal");
-    pdf.text(`Page ${pageIndex + 1} of ${pages.length}`, pageWidth - margins.right, margins.top + 4, {
-      align: "right",
-    });
+      // Header text
+      pdf.setTextColor(secondaryRgb[0], secondaryRgb[1], secondaryRgb[2]);
+      pdf.setFontSize(10);
+      pdf.setFont("helvetica", "bold");
+      
+      const headerDisplayText = headerText || "Image to PDF";
+      pdf.text(headerDisplayText, margins.left, margins.top + 4);
+      
+      pdf.setFont("helvetica", "normal");
+      pdf.text(`Page ${pageIndex + 1} of ${pages.length}`, pageWidth - margins.right, margins.top + 4, {
+        align: "right",
+      });
+    }
 
     // Grid
     const pageImages = pages[pageIndex];
@@ -185,17 +190,20 @@ export const generatePDF = async (options: PDFGeneratorOptions): Promise<Blob> =
       }
     }
 
-    // Footer line
-    pdf.setDrawColor(primaryRgb[0], primaryRgb[1], primaryRgb[2]);
-    pdf.setLineWidth(0.5);
-    pdf.line(margins.left, pageHeight - margins.bottom, pageWidth - margins.right, pageHeight - margins.bottom);
+    // Footer (only if showFooter is true)
+    if (showFooter) {
+      // Footer line
+      pdf.setDrawColor(primaryRgb[0], primaryRgb[1], primaryRgb[2]);
+      pdf.setLineWidth(0.5);
+      pdf.line(margins.left, pageHeight - margins.bottom, pageWidth - margins.right, pageHeight - margins.bottom);
 
-    // Footer text
-    if (footerText) {
-      pdf.setTextColor(primaryRgb[0], primaryRgb[1], primaryRgb[2]);
-      pdf.setFontSize(8);
-      pdf.setFont("helvetica", "normal");
-      pdf.text(footerText, margins.left, pageHeight - margins.bottom + 5);
+      // Footer text
+      if (footerText) {
+        pdf.setTextColor(primaryRgb[0], primaryRgb[1], primaryRgb[2]);
+        pdf.setFontSize(8);
+        pdf.setFont("helvetica", "normal");
+        pdf.text(footerText, margins.left, pageHeight - margins.bottom + 5);
+      }
     }
   }
 
