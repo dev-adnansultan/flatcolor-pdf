@@ -159,7 +159,7 @@ const Layout = ({
               </p>
               <div className="flex gap-3">
                 <a 
-                  href="https://github.com/dev-adnansultan/flatcolor-pdf" 
+                  href="https://github.com/madnansultandotme/flatcolor-pdf" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-foreground transition-colors"
@@ -198,7 +198,7 @@ const Layout = ({
                 </li>
                 <li>
                   <a 
-                    href="https://github.com/dev-adnansultan/flatcolor-pdf" 
+                    href="https://github.com/madnansultandotme/flatcolor-pdf" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
@@ -235,7 +235,7 @@ const Layout = ({
                 </li>
                 <li>
                   <a 
-                    href="https://github.com/dev-adnansultan/flatcolor-pdf/issues" 
+                    href="https://github.com/madnansultandotme/flatcolor-pdf/issues" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"

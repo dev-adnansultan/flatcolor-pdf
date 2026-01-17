@@ -147,7 +147,7 @@ const About = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
-                href="https://github.com/dev-adnansultan/flatcolor-pdf" 
+                href="https://github.com/madnansultandotme/flatcolor-pdf" 
                 target="_blank" 
                 rel="noopener noreferrer"
               >
