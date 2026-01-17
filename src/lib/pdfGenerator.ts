@@ -6,6 +6,7 @@ interface ImageFile {
   id: string;
   file: File;
   preview: string;
+  rotation?: number;
 }
 
 interface PDFGeneratorOptions {
@@ -19,6 +20,7 @@ interface PDFGeneratorOptions {
   footerText?: string;
   showHeader?: boolean;
   showFooter?: boolean;
+  showBorders?: boolean;
   margins?: {
     top: number;
     right: number;
@@ -50,6 +52,7 @@ export const generatePDF = async (options: PDFGeneratorOptions): Promise<Blob> =
     footerText = "",
     showHeader = true,
     showFooter = true,
+    showBorders = true,
     margins = { top: 15, right: 15, bottom: 15, left: 15 }
   } = options;
 
@@ -109,6 +112,30 @@ export const generatePDF = async (options: PDFGeneratorOptions): Promise<Blob> =
     });
   };
 
+  const rotateImage = (img: HTMLImageElement, rotation: number): string => {
+    if (rotation === 0) return img.src;
+    
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return img.src;
+
+    // Set canvas size based on rotation
+    if (rotation === 90 || rotation === 270) {
+      canvas.width = img.height;
+      canvas.height = img.width;
+    } else {
+      canvas.width = img.width;
+      canvas.height = img.height;
+    }
+
+    // Translate and rotate
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate((rotation * Math.PI) / 180);
+    ctx.drawImage(img, -img.width / 2, -img.height / 2);
+
+    return canvas.toDataURL('image/jpeg', 0.95);
+  };
+
   for (let pageIndex = 0; pageIndex < pages.length; pageIndex++) {
     if (pageIndex > 0) {
       pdf.addPage();
@@ -150,14 +177,22 @@ export const generatePDF = async (options: PDFGeneratorOptions): Promise<Blob> =
       const x = margins.left + col * (cellWidth + gap);
       const y = contentTop + row * (cellHeight + gap);
 
-      // Cell border
-      pdf.setDrawColor(primaryRgb[0], primaryRgb[1], primaryRgb[2]);
-      pdf.setLineWidth(0.5);
-      pdf.rect(x, y, cellWidth, cellHeight, "S");
+      // Cell border - only if showBorders is true
+      if (showBorders) {
+        pdf.setDrawColor(primaryRgb[0], primaryRgb[1], primaryRgb[2]);
+        pdf.setLineWidth(0.5);
+        pdf.rect(x, y, cellWidth, cellHeight, "S");
+      }
 
       try {
         const img = await loadImage(image.preview);
-        const imgAspect = img.width / img.height;
+        const rotation = image.rotation || 0;
+        
+        // Rotate the image if needed
+        const rotatedImageSrc = rotateImage(img, rotation);
+        const rotatedImg = rotation !== 0 ? await loadImage(rotatedImageSrc) : img;
+        
+        const imgAspect = rotatedImg.width / rotatedImg.height;
         const cellAspect = cellWidth / (showCaptions ? cellHeight - 8 : cellHeight);
 
         let drawWidth = cellWidth - 4;
@@ -172,7 +207,7 @@ export const generatePDF = async (options: PDFGeneratorOptions): Promise<Blob> =
         const drawX = x + (cellWidth - drawWidth) / 2;
         const drawY = y + ((showCaptions ? cellHeight - 8 : cellHeight) - drawHeight) / 2;
 
-        pdf.addImage(image.preview, "JPEG", drawX, drawY, drawWidth, drawHeight);
+        pdf.addImage(rotatedImageSrc, "JPEG", drawX, drawY, drawWidth, drawHeight);
 
         // Caption
         if (showCaptions) {

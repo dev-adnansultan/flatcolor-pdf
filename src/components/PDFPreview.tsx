@@ -5,6 +5,7 @@ interface ImageFile {
   id: string;
   file: File;
   preview: string;
+  rotation?: number;
 }
 
 interface PDFPreviewProps {
@@ -17,6 +18,7 @@ interface PDFPreviewProps {
   footerText?: string;
   showHeader?: boolean;
   showFooter?: boolean;
+  showBorders?: boolean;
 }
 
 const PDFPreview = ({
@@ -28,6 +30,7 @@ const PDFPreview = ({
   footerText = "",
   showHeader = true,
   showFooter = true,
+  showBorders = true,
 }: PDFPreviewProps) => {
   const getGridConfig = () => {
     switch (layout) {
@@ -101,14 +104,20 @@ const PDFPreview = ({
               {pageImages.map((image) => (
                 <div
                   key={image.id}
-                  className="rounded overflow-hidden"
-                  style={{ border: `2px solid ${primaryColor}` }}
+                  className="rounded overflow-hidden flex items-center justify-center"
+                  style={{ 
+                    border: showBorders ? `2px solid ${primaryColor}` : 'none',
+                    backgroundColor: secondaryColor 
+                  }}
                 >
                   <img
                     src={image.preview}
                     alt={image.file.name}
-                    className="w-full h-full object-contain"
-                    style={{ backgroundColor: secondaryColor }}
+                    className="w-full h-full object-contain transition-transform duration-200"
+                    style={{ 
+                      backgroundColor: secondaryColor,
+                      transform: `rotate(${image.rotation || 0}deg)`
+                    }}
                   />
                 </div>
               ))}
@@ -117,8 +126,11 @@ const PDFPreview = ({
                 [...Array(perPage - pageImages.length)].map((_, i) => (
                   <div
                     key={`empty-${i}`}
-                    className="rounded border-2 border-dashed flex items-center justify-center"
-                    style={{ borderColor: primaryColor, opacity: 0.3 }}
+                    className="rounded flex items-center justify-center"
+                    style={{ 
+                      border: showBorders ? `2px dashed ${primaryColor}` : 'none',
+                      opacity: showBorders ? 0.3 : 0.1
+                    }}
                   >
                     <span
                       className="text-xs"
