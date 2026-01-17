@@ -5,6 +5,38 @@ All notable changes to Flatcolor PDF will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-01-18
+
+### Added
+- 🔄 Image rotation feature - rotate images 90° clockwise before PDF generation
+- 🎨 Quick color mode toggle - switch between custom colors and black & white
+- 🖼️ Border toggle - option to disable image borders/outlines for cleaner PDFs
+- 📱 Collapsible toolbar on mobile - saves vertical space with expandable settings
+- 👁️ Real-time rotation preview - see rotated images in preview before generating PDF
+
+### Improved
+- 📱 Enhanced mobile responsiveness across all components
+- 🎯 Optimized TopBar layout with collapsible design on mobile devices
+- 🎨 Compact color picker interface with better mobile touch targets
+- 📐 Streamlined layout selector with reduced spacing on mobile
+- 🔧 Moved "Generate PDF" button to top of settings for better accessibility
+- 📊 Relocated preview section below image upload area for better workflow
+- 🎨 Fixed color picker icon visibility issues
+- ⚡ Improved PDF generation performance with canvas-based image rotation
+
+### Fixed
+- 🐛 Resolved color wheel icon appearing on color picker squares
+- 🐛 Fixed PDF generation issues with rotated images
+- 🐛 Corrected rotation preview not updating in real-time
+- 📱 Fixed toolbar alignment issues on mobile devices
+- 🎨 Improved color picker component styling and functionality
+
+### Technical Details
+- Canvas-based image pre-rotation for reliable PDF generation
+- Enhanced state management for rotation, colors, and borders
+- Improved component modularity and reusability
+- Better TypeScript type definitions across components
+
 ## [1.0.0] - 2026-01-17
 
 ### Added
