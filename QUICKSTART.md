@@ -16,7 +16,7 @@ Open [http://localhost:5173](http://localhost:5173)
 
 ## 📱 Using the App
 
-1. **Upload Images** - Drag & drop or click to browse
+1. **Upload Images** - Drag and drop or click to browse
 2. **Choose Colors** - Pick from 8 presets or customize
 3. **Select Layout** - Single, 1×2, 2×1, 2×2, or 3×3 grid
 4. **Customize** - Add headers, footers, adjust margins
