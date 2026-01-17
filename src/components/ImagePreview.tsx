@@ -1,4 +1,4 @@
-import { X, GripVertical } from "lucide-react";
+import { X, GripVertical, RotateCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -6,15 +6,17 @@ interface ImageFile {
   id: string;
   file: File;
   preview: string;
+  rotation?: number;
 }
 
 interface ImagePreviewProps {
   images: ImageFile[];
   onRemove: (id: string) => void;
   onReorder: (images: ImageFile[]) => void;
+  onRotate?: (id: string) => void;
 }
 
-const ImagePreview = ({ images, onRemove, onReorder }: ImagePreviewProps) => {
+const ImagePreview = ({ images, onRemove, onReorder, onRotate }: ImagePreviewProps) => {
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
 
@@ -80,20 +82,37 @@ const ImagePreview = ({ images, onRemove, onReorder }: ImagePreviewProps) => {
             <img
               src={image.preview}
               alt={image.file.name}
-              className="w-full h-full object-cover pointer-events-none"
+              className="w-full h-full object-cover pointer-events-none transition-transform duration-200"
+              style={{ transform: `rotate(${image.rotation || 0}deg)` }}
             />
             <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors" />
             <div className="absolute top-1 left-1 sm:top-2 sm:left-2 bg-secondary text-secondary-foreground text-xs font-mono px-1.5 py-0.5 sm:px-2 sm:py-1 rounded">
               {index + 1}
             </div>
-            <Button
-              variant="destructive"
-              size="icon"
-              className="absolute top-1 right-1 sm:top-2 sm:right-2 w-5 h-5 sm:w-6 sm:h-6 opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={() => onRemove(image.id)}
-            >
-              <X className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-            </Button>
+            <div className="absolute top-1 right-1 sm:top-2 sm:right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              {onRotate && (
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="w-5 h-5 sm:w-6 sm:h-6 bg-primary hover:bg-primary/90"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRotate(image.id);
+                  }}
+                  title="Rotate 90°"
+                >
+                  <RotateCw className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary-foreground" />
+                </Button>
+              )}
+              <Button
+                variant="destructive"
+                size="icon"
+                className="w-5 h-5 sm:w-6 sm:h-6"
+                onClick={() => onRemove(image.id)}
+              >
+                <X className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+              </Button>
+            </div>
             <div className="absolute bottom-0 left-0 right-0 bg-card/90 backdrop-blur-sm px-1.5 py-1 sm:px-2 sm:py-1.5">
               <p className="text-xs text-foreground truncate font-medium">
                 {image.file.name}
